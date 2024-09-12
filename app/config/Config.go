@@ -44,8 +44,6 @@ func newHTTPServer(lc fx.Lifecycle, r nest.Handler) *http.Server {
 
 func newChiHandler(appModule *app.AppModule) *chi.Mux {
 	r := chi.NewRouter()
-	// r.Mount("/", userController.Router)
-
 	for _, c := range appModule.GetControllers() {
 		r.Mount("/", c.AddRoter())
 	}
