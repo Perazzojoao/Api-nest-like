@@ -5,30 +5,32 @@ import (
 
 	usermodule "nest/app/modules/UserModule"
 	"nest/nest"
+
 )
 
 var AppModuleFx = fx.Module("appModule",
-	fx.Provide(NewAppModule),
+	fx.Provide(
+		fx.Annotate(
+			NewAppModule,
+			fx.ParamTags(`group:"appModules"`),
+		),
+	),
 	usermodule.UserModuleFx,
 )
 
 type AppModule struct {
-	modules     []nest.Module
 	controllers []nest.Controller
 }
 
-func NewAppModule(module nest.Module) *AppModule {
+func NewAppModule(module []nest.IModule) *AppModule {
 	appModule := &AppModule{}
 
-	appModule.modules = append(appModule.modules, module.GetModules()...)
-	appModule.controllers = append(appModule.controllers, module.GetControllers()...)
+	for _, module := range module {
+		appModule.controllers = append(appModule.controllers, module.GetControllers()...)
+	}
 	return appModule
 }
 
 func (app *AppModule) GetControllers() []nest.Controller {
 	return app.controllers
-}
-
-func (app *AppModule) GetModules() []nest.Module {
-	return app.modules
 }

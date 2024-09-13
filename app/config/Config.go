@@ -16,7 +16,6 @@ func NewApp() *fx.App {
 	return fx.New(
 		fx.Provide(
 			newHTTPServer,
-			newChiHandler,
 			fx.Annotate(
 				newChiHandler,
 				fx.As(new(nest.Handler)),
@@ -44,8 +43,6 @@ func newHTTPServer(lc fx.Lifecycle, r nest.Handler) *http.Server {
 
 func newChiHandler(appModule *app.AppModule) *chi.Mux {
 	r := chi.NewRouter()
-	// r.Mount("/", userController.Router)
-
 	for _, c := range appModule.GetControllers() {
 		r.Mount("/", c.AddRoter())
 	}
