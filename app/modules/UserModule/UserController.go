@@ -25,7 +25,7 @@ func NewUserController(userService *UserService) *UserController {
 	return uc
 }
 
-func (u *UserController) AddRoter() http.Handler {
+func (u *UserController) AddRoter() *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Route("/user", func(r chi.Router) {
@@ -33,7 +33,6 @@ func (u *UserController) AddRoter() http.Handler {
 		r.Post("/", u.AddUser)
 	})
 
-	u.Router = r
 	return r
 }
 

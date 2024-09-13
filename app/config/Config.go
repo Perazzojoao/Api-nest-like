@@ -16,7 +16,6 @@ func NewApp() *fx.App {
 	return fx.New(
 		fx.Provide(
 			newHTTPServer,
-			newChiHandler,
 			fx.Annotate(
 				newChiHandler,
 				fx.As(new(nest.Handler)),
